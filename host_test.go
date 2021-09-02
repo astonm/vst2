@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"pipelined.dev/audio/vst2"
+	"github.com/astonm/vst2"
 )
 
 func TestPluginParameters(t *testing.T) {

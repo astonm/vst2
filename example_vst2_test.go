@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"pipelined.dev/audio/vst2"
+	"github.com/astonm/vst2"
 	"pipelined.dev/signal"
 )
 
