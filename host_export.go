@@ -4,7 +4,10 @@ package vst2
 
 //#include "include/vst.h"
 import "C"
-import "unsafe"
+import (
+	"log"
+	"unsafe"
+)
 
 //export hostCallbackBridge
 // global hostCallbackBridge, calls real callback.
@@ -14,15 +17,19 @@ func hostCallbackBridge(p *C.CPlugin, opcode int32, index int32, value int64, pt
 	if HostOpcode(opcode) == HostVersion {
 		return version
 	}
+
 	callbacks.RLock()
 	c, ok := callbacks.mapping[unsafe.Pointer(p)]
 	callbacks.RUnlock()
+
+	if c == nil {
+		log.Printf("host callback is undefined, opcode %v; continuing", opcode)
+		return 0
+	}
+
 	if !ok {
 		panic("plugin was closed")
 	}
 
-	if c == nil {
-		panic("host callback is undefined")
-	}
 	return c(HostOpcode(opcode), index, value, ptr, opt)
 }
