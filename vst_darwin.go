@@ -65,7 +65,9 @@ func getName(bundle C.CFBundleRef) string {
 	// create CF string.
 	cfNameKey := C.CFStringCreateWithCString(0, stringToCString(displayNameKey), C.kCFStringEncodingUTF8)
 	defer C.CFRelease(C.CFTypeRef(cfNameKey))
+
 	cfName := C.CFBundleGetValueForInfoDictionaryKey(bundle, cfNameKey)
+	C.CFRetain(cfName)
 	defer C.CFRelease(cfName)
 
 	return cfStringRefToString(C.CFStringRef(cfName))
